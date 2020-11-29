@@ -1,4 +1,6 @@
-package com.company;
+package com.company.component;
+
+import com.company.Mediator;
 
 public class TextField extends Component{
     private String text = "";

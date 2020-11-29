@@ -1,8 +1,9 @@
-package com.company;
+package com.company.component;
+
+import com.company.Mediator;
 
 public class Component{
     final Mediator<Component> dialog;
-
 
     public Component(Mediator<Component> mediator) {
         this.dialog = mediator;

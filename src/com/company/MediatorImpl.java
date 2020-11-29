@@ -1,5 +1,9 @@
 package com.company;
 
+import com.company.component.Button;
+import com.company.component.Component;
+import com.company.component.TextField;
+
 public class MediatorImpl implements Mediator<Component>{
 
     private Button Loginbutton;
