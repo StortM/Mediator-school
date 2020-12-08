@@ -9,12 +9,23 @@ public class Button extends Component {
     }
 
 
-    public void buttonPress(){
-        //something something
+    @Override
+    public void keypress() {
+        super.keypress();
+    }
 
-        //call other class
+    @Override
+    public void click() {
+        super.click();
+    }
 
-        dialog.notify(this,"click");
+    public void loginClick(){
+        System.out.println("login click");
+        dialog.notify(this,"loginClick");
+    }
 
+    public void createUserClick(){
+        System.out.println("createUserClick");
+        dialog.notify(this,"createUserClick");
     }
 }
