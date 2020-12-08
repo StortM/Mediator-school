@@ -66,6 +66,15 @@ public class MockUserRepositoryTest {
 
     @Test
     public void updateUserById() {
+        final User user2Updated = new User(2, "firstName2", "lastName2", "newUser2", "newPassword2", "mail2@mail.com");
+        final User user3Updated = new User(3, "firstName3", "lastName3", "newUser3", "newPassword3", "mail3@mail.com");
 
+        repository.update(user2Updated);
+        repository.update(user3Updated);
+
+        assertAll(
+                () -> assertEquals(user2Updated, repository.findById(2)),
+                () -> assertEquals(user3Updated, repository.findById(3))
+        );
     }
 }
