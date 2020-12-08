@@ -12,6 +12,8 @@ import java.util.List;
     ArrayList er 0-index baseret og derfor vil klassen instantiere en arraylist med 1 bruger for at index gerne skulle være repræsentativt for user objektet (index starter fra 1).
     OBS!! Brug size() metoden istedet for at kalde listens size metode.*/
 
+// hele klassen burde nok være lavet med Map i stedet for arrayliste, da det havde været nemmere at forstå og kode til. Men lidt sent at ændre nu..
+
 public class MockUserRepository implements CrudRepository<User> {
     private final List<User> database;
 
@@ -40,16 +42,16 @@ public class MockUserRepository implements CrudRepository<User> {
         return null;
     }
 
+    // den her er lavet lidt hurtigt da jeg er en smule træt.
+    // den er ligesom nogen af de andre metoder lidt dum pga den interne arraylist implementation
+    // set metoden fra arraylist klassen skal bruge et index hvilket jeg tager direkte fra user id
+    // det er ok hvis der ikke slettes elementer fra db listen, men hvis der gør vil id og index ikke være in sync.
+    // regner ikke med vi skal slette elementer så det burde være ok
     @Override
     public void update(User user) {
-        int userIndexInDatabase = 0;
-
         for(User userInDatabase : database) {
-            userIndexInDatabase++;
-
             if(userInDatabase.getId() == user.getId()) {
-                database.add(user);
-                database.remove(userIndexInDatabase);
+                database.set((int) userInDatabase.getId(), user);
             }
         }
     }
