@@ -7,4 +7,5 @@ public interface CrudRepository<T> {
     void delete (T entity);
     boolean exists(long id);
     Iterable<T> findAll();
+    long size();
 }

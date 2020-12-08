@@ -22,13 +22,13 @@ Button button;
         //button.buttonPress();
 
         switch (input) {
-            case 1-> System.out.println("create user"); // notify(mediator,"create") or logInMenu(sc);
-            case 2-> System.out.println("Log in"); //notify(mediator,"login") or createMenu(sc);
-            case 3-> {
-                notify(mediator,"exit");
-                System.out.println("exit");
-                break;
-            }
+            //case 1-> System.out.println("create user"); // notify(mediator,"create") or logInMenu(sc);
+            //case 2-> System.out.println("Log in"); //notify(mediator,"login") or createMenu(sc);
+            //case 3-> {
+                //notify(mediator,"exit");
+                //System.out.println("exit");
+                //break;
+            //}
 
         }
 

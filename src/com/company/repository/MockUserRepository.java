@@ -9,7 +9,7 @@ import java.util.List;
     "Database" klasse der understøtter CRUD operationer
     Benytter ArrayList til intern opbevaring af User objekter
 
-    ArrayList er 0-index baseret og derfor vil klassen instantiere en arraylist med 1 bruger for at index gerne skulle være repræsentativt for user objektet.
+    ArrayList er 0-index baseret og derfor vil klassen instantiere en arraylist med 1 bruger for at index gerne skulle være repræsentativt for user objektet (index starter fra 1).
     OBS!! Brug size() metoden istedet for at kalde listens size metode.*/
 
 public class MockUserRepository implements CrudRepository<User> {
@@ -20,24 +20,8 @@ public class MockUserRepository implements CrudRepository<User> {
         database.add(new User(0, "!! 0 index user, dont use !!", "!! 0 index user, dont use !!", "!! 0 index user, dont use !!", "!! 0 index user, dont use !!", ""));
     }
 
-    private int size() {
+    public long size() {
         return database.size() - 1;
-    }
-
-    // todo -- brug user id til at finde index for user (hvis det findes)
-    private int findUserIndex(User user) {
-        int userIndex = -1;
-        int current = 0;
-
-        for(User userFromDb : database) {
-            current++;
-
-            if(userFromDb.getId() == user.getId()) {
-                return current;
-            }
-        }
-
-        return userIndex;
     }
 
     @Override
@@ -56,24 +40,22 @@ public class MockUserRepository implements CrudRepository<User> {
         return null;
     }
 
-    // todo -- skal bruge findUserIndex
     @Override
     public void update(User user) {
         int userIndexInDatabase = 0;
 
-        for(User userFromDb : database) {
+        for(User userInDatabase : database) {
             userIndexInDatabase++;
 
-            if(userIndexInDatabase == user.getId()) {
-                database.set(userIndexInDatabase, user);
-                break;
+            if(userInDatabase.getId() == user.getId()) {
+                database.add(user);
+                database.remove(userIndexInDatabase);
             }
         }
     }
 
     @Override
     public void delete(User user) {
-
         database.remove((int) user.getId());
     }
 
@@ -95,5 +77,12 @@ public class MockUserRepository implements CrudRepository<User> {
     @Override
     public Iterable<User> findAll() {
         return database;
+    }
+
+    @Override
+    public String toString() {
+        return "MockUserRepository{" +
+                "database=" + database +
+                '}';
     }
 }
