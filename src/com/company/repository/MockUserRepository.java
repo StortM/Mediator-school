@@ -26,8 +26,14 @@ public class MockUserRepository implements CrudRepository<User> {
         return database.size() - 1;
     }
 
+    private long calculateNextId() {
+        return size() + 1;
+    }
+
     @Override
     public void add(User user) {
+        user.setId(calculateNextId());
+
         database.add(user);
     }
 

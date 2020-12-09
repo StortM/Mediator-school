@@ -8,7 +8,6 @@ public class Button extends Component {
         super(mediator);
     }
 
-
     @Override
     public void keypress() {
         super.keypress();

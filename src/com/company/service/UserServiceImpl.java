@@ -9,9 +9,10 @@ import java.util.List;
 
 public class UserServiceImpl implements IUserService<User> {
 
-    MockUserRepository mockUserRepository;
+    private final MockUserRepository mockUserRepository;
 
     public UserServiceImpl(){
+        mockUserRepository = new MockUserRepository();
     }
 
     @Override
@@ -73,15 +74,15 @@ public class UserServiceImpl implements IUserService<User> {
         return false;
     }
 
-    public boolean loginCredentialsExists(String usernameToCheck, String passwordToCheck){
+    public User validateUser(String usernameToCheck, String passwordToCheck){
         List<User> userList = (List<User>) mockUserRepository.findAll();
 
         for (User user : userList) {
             if (user.getUsername().equals(usernameToCheck) && user.getPassword().equals(passwordToCheck)){
-                return true;
+                return user;
             }
         }
 
-        return false;
+        return null;
     }
 }

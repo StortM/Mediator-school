@@ -1,7 +1,10 @@
 package com.company.menu;
 
-import com.company.MediatorImpl;
+import com.company.CreateUserMediator;
+import com.company.Mediator;
+import com.company.component.Component;
 import com.company.model.User;
+import com.company.service.UserServiceImpl;
 
 import java.util.Scanner;
 
@@ -9,81 +12,88 @@ public class Menu {
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_RESET = "\u001B[0m";
 
-    MediatorImpl mediator;
-    int windowX = 150;
-    int windowY = 100;
-    String title = "Start title";
+    private static Mediator<Component> createUserMediator = new CreateUserMediator();
+    private static UserServiceImpl userService = new UserServiceImpl();
+    private static final Scanner scanner = new Scanner(System.in);
 
-
-    public void startMenu() {
-        System.out.println("The title of the frame is " + title);
-        System.out.println("The size of this frame is " + windowX + " wide and " + windowY + " high");
+    public static void run() {
+        while(true) {
+            System.out.println(userService.getAll());
+            System.out.println("[1] - Create User");
+            System.out.println("[2] - Login");
+            System.out.print("\n Choice: ");
+            choiceLoop();
+        }
     }
 
-    public void createUserMenu() {
+    public static void choiceLoop() {
+        String choice = scanner.next();
+
+        switch(choice) {
+            case "1":
+                createUserMenu();
+                break;
+            case "2":
+                logInMenu();
+                break;
+            default:
+                System.out.println("Wrong input. Try again");
+        }
+    }
+
+    public static void createUserMenu() {
         System.out.println("createUser");
+
         Scanner scanner = new Scanner(System.in);
         User tempUser = new User();
+
         System.out.println("Welcome new user \n Please enter your firstname...");
-        String input = scanner.nextLine();
+
+        String input = scanner.next();
         tempUser.setFirstName(input);
+
         System.out.println("\n Please enter your Lastname...");
-        input = scanner.nextLine();
+
+        input = scanner.next();
         tempUser.setLastName(input);
-        tempUser.setUsername(tempUser.getFirstName() + tempUser.getLastName() + (Math.random() * 35));
+
+        tempUser.setUsername(tempUser.getFirstName() + tempUser.getLastName() + (int) (Math.random() * 35));
+
         // If-check om Username er i DB
+
         System.out.println("\n Please enter your Email adresse...");
-        input = scanner.nextLine();
+
+        input = scanner.next();
         // If-check om Email er i DB
         tempUser.setEmail(input);
-        System.out.println("\n Please enter your Email adresse...");
-        input = scanner.nextLine();
+
+        System.out.println("\n Please enter your Password...");
+
+        input = scanner.next();
         // if-check if less than X chars
         tempUser.setPassword(input);
-        // Send tempUser to MockDB
-        System.out.println("\n Welcome "+ ANSI_RED +tempUser.getFirstName() + ANSI_RESET + " to The Mediator Club!");
-        scanner.close();
-        // MainMenu(tempUser) ?
+
+        userService.add(tempUser);
+
+        System.out.println("\n Welcome "+ ANSI_RED + tempUser.getFirstName() + ANSI_RESET + " to The Mediator Club!");
+        System.out.println("Your username is: " + tempUser.getUsername());
     }
 
-    public void logInMenu() {
+    public static void logInMenu() {
         System.out.println("loginmenu");
-        Scanner scanner = new Scanner(System.in);
+
         System.out.println("Welcome \n Please enter your Username...");
-        String input = scanner.nextLine();
-        User tempUser = new User();
-        tempUser.setUsername(input);
+        String username = scanner.next();
+
         System.out.println("\n Please enter your Password...");
-        input = scanner.nextLine();
-        tempUser.setPassword(input);
-        // Sendt tempUser to DB , check if els "Wrong information, Try again... logInMenu()
-        System.out.println("Welcome back "+ ANSI_RED +tempUser.getFirstName() + ANSI_RESET);
-        // MainMenu(tempUser) ?
+        String password = scanner.next();
+
+        User validationResult = userService.validateUser(username, password);
+
+        if(validationResult == null) {
+            System.out.println(ANSI_RED + "Bad username or password!" + ANSI_RESET);
+        } else {
+            System.out.println("Welcome back "+ ANSI_RED + validationResult.getUsername() + ANSI_RESET);
+        }
     }
-
-
-    public int getWindowX() {
-        return windowX;
-    }
-
-    public void setWindowxX(int windowxX) {
-        this.windowX = windowxX;
-    }
-
-    public int getWindowY() {
-        return windowY;
-    }
-
-    public void setWindowY(int windowY) {
-        this.windowY = windowY;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
 }
